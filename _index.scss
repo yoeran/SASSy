@@ -1,0 +1,17 @@
+// Collection of generic/reusable mixins, functions, placeholders etc.
+@import '0 - vendor/**';
+
+// Project specific settings, variables, mixins and functions
+@import '1 - project/**';
+
+// General styles for base elements (body, a, p, h1...6 etc.)
+@import '2 - base/**';
+
+// Tightly coupled styles for components
+@import '3 - components/**';
+
+// Generic helper classes (usually small dirty hacks, keep this folder clean yo!)
+@import '4 - helpers/**';
+
+// No styles, just page-layouts
+@import '5 - layouts/**';

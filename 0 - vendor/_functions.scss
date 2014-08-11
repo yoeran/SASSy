@@ -1,0 +1,73 @@
+$base_font_size: 16px !default;
+
+////////////////////
+// Padding and margin helpers
+// Makes sure you can always add padding/margin by increments of the base grid
+$spacing_unit_base: $base_font_size/2 !default;
+$spacing_unit_size: .5rem !default;
+
+// Shorthand for spacing padding
+@mixin padding($units) {
+  @include spacing(padding, $units);
+}
+
+// Shorthand for spacing margin
+@mixin margin($units) {
+  @include spacing(margin, $units);
+}
+
+// Calculate units for property with pixel fallback
+@mixin spacing($property, $unit) {
+  #{$property}: spacing_units($unit);
+  #{$property}: spacing_units($unit, true);
+}
+
+// Calculate all given units and return a correct property-value
+@function spacing_units($units, $get_rem: false) {
+  $calced_units: null;
+
+  @for $i from 1 through length($units) {
+    $unit: nth($units, $i);
+    $calced_units: $calced_units spacing_unit($unit, $get_rem);
+  }
+
+  @return $calced_units;
+}
+
+// Calculate each individual unit
+@function spacing_unit($unit, $get_rem: false) {
+  $size: $spacing_unit_base;
+
+  @if $unit == 'auto' {
+    @return auto;
+  }
+
+  @if $get_rem {
+    $size: $spacing_unit_size;
+  }
+
+  @return ( $size*$unit );
+}
+
+
+///////////////////////
+// Em and Rem calc
+@function emcalc($target, $base: $base_font_size) {
+  @return ($target / $base) * 1em;
+}
+
+@function remcalc($target) {
+  @return ($target / $base_font_size) * 1rem;
+}
+
+@function contrast-color($color, $dark, $light, $threshold: 70%) {
+  @return if(lightness($color) < $threshold, $light, $dark)
+}
+
+
+///////////////////////
+// Shortcut for color palette sass-map
+// http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/#solving-issue-1-the-naming-of-things
+@function palette($palette, $tone: 'base') {
+    @return map-get(map-get($palettes, $palette), $tone);
+}
