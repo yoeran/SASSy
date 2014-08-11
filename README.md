@@ -1,4 +1,4 @@
 SASSy
 =====
 
-Personal SCSS framework
+My personal SCSS boilerplate
