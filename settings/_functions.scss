@@ -68,6 +68,6 @@ $spacing_unit_size: .5rem !default;
 ///////////////////////
 // Shortcut for color palette sass-map
 // http://erskinedesign.com/blog/friendlier-colour-names-sass-maps/#solving-issue-1-the-naming-of-things
-@function palette($palette, $tone: 'base') {
+@function clr($palette, $tone: 'base') {
     @return map-get(map-get($palettes, $palette), $tone);
 }

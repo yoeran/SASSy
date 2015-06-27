@@ -6,3 +6,11 @@
 	box-sizing: border-box;
 }
 
+*:focus {
+  outline-color: clr(brand);
+}
+
+body {
+  @include font(body, normal);
+  line-height: 1.5;
+}

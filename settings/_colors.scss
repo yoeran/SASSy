@@ -1,0 +1,16 @@
+$_color-grey: rgb(229,231,234);
+
+$_color-brand: #f60;
+$_color-secundary: #00bfff;
+
+$_available-colors: brand, secundary, success, warning, error, info;
+
+$palettes: (
+  brand: createPalette($_color-brand),
+  secundary: createPalette($_color-secundary),
+  success: createPalette(#49bf82),
+  warning: createPalette(#f3c926),
+  error: createPalette(#bf494b),
+  info: createPalette(#699ee7),
+  grey: createPalette($_color-grey)
+);

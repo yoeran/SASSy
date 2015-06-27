@@ -1,9 +1,0 @@
-// Clearfixer ()
-%clearfix {
-	@include clearfix;
-}
-
-// Image replacement
-%ir {
-	@include image_replacement();
-}

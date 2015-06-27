@@ -1,0 +1,21 @@
+//
+// Flexbox layout
+//
+.flex-layout {
+  display: flex;
+  justify-content: space-between;
+
+  &--center {
+    align-items: center;
+  }
+
+  .col {
+    & + .col {
+      margin-left: 2em;
+    }
+
+    @for $col from 1 through 12 {
+      &--#{$col} { flex: $col; }
+    }
+  }
+}

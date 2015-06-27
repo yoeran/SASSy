@@ -1,33 +1,29 @@
-// Collection of generic/reusable mixins, functions, placeholders etc.
-@import 'vendor/functions';
-@import 'vendor/mixins';
-@import 'vendor/normalize';
-@import 'vendor/placeholders';
-
-// Project specific settings, variables, mixins and functions
-@import 'project/colors';
-@import 'project/fonts';
-@import 'project/iconfont';
-@import 'project/mediaqueries';
-@import 'project/mixins';
-@import 'project/styles';
+// Collection of mixins, functions, variables and external services
+@import 'settings/functions';
+@import 'settings/mixins';
+@import 'settings/colors';
+@import 'settings/styles';
+@import 'settings/fonts';
+@import 'settings/iconfont';
+@import 'settings/mediaqueries';
 
 // General styles for base elements (body, a, p, h1...6 etc.)
+@import 'base/normalize';
+@import 'base/placeholders';
 @import 'base/base';
-@import 'base/forms';
+@import 'base/table';
+@import 'base/form';
 @import 'base/icons';
-@import 'base/layout';
-@import 'base/tables';
-@import 'base/text';
+@import 'base/txt-formats';
+
+// No styles, just page-layouts
+@import 'layout/flex';
 
 // Tightly coupled styles for components
 // @import 'components/media-object';
 
-
 // Generic helper classes (usually small dirty hacks, keep this folder clean yo!)
 @import 'helpers/positioning';
 @import 'helpers/spacing';
-@import 'helpers/text';
 
-// No styles, just page-layouts
-@import 'layouts/basic';
+

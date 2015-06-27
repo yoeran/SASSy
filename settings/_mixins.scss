@@ -1,0 +1,241 @@
+///////////////////////
+// Resize anything
+@mixin resizable($direction) {
+  resize: $direction; // Options: horizontal, vertical, both
+  overflow: auto; // Safari fix
+}
+
+///////////////////////
+// RGBA with fallback
+@mixin rgba($property, $red, $green, $blue, $alpha) {
+  #{$property}: rgb(#{$red}, #{$green}, #{$blue}); /* [1] */
+  #{$property}: rgba(#{$red}, #{$green}, #{$blue}, #{$alpha}); /* [2] */
+}
+
+///////////////////////
+// Micro Clearfix
+// http://nicolasgallagher.com/micro-clearfix-hack/
+@mixin clearfix {
+  *zoom: 1;
+  &:after {
+    content: '';
+    display: table;
+    line-height: 0;
+    clear: both;
+  }
+}
+
+
+///////////////////////
+// Image replacement
+@mixin image_replacement {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+///////////////////////
+// Truncate text with ellipsis
+@mixin truncate_text($overflow: ellipsis){
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: $overflow; // values are: clip, ellipsis, or a string
+}
+
+
+///////////////////////
+// Crossbrowser opacity
+@mixin opacity($value){
+  $IEValue: $value*100;
+  opacity: $value;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+$IEValue+")";
+  filter: alpha(opacity=$IEValue);
+}
+
+
+///////////////////////
+// Ratio aware scaling
+// Example usage: .ratio-16-9 { @extend %ratioAware; padding-bottom: (9/16) * 100%; }
+@mixin ratio_aware($width: 16, $height: 9) {
+  $ratio: $height / $width;
+  position: relative;
+  height: 0;
+  padding-top: 1px;
+  padding-bottom: $ratio * 100%;
+
+  embed,
+  video,
+  object,
+  iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+///////////////////////
+// Position shorthand
+@mixin position($position, $args) {
+  position: $position;
+
+  $top: null;
+  $right: null;
+  $bottom: null;
+  $left: null;
+
+  @if length($args) > 0 { $top: nth($args, 1); }
+  @if length($args) > 1 { $right: nth($args, 2); }
+  @if length($args) > 2 { $bottom: nth($args, 3); }
+  @if length($args) > 3 { $left: nth($args, 4); }
+
+  @include trbl($top, $right, $bottom, $left);
+}
+
+@mixin absolute($args) {
+  @include position(absolute, $args);
+}
+
+@mixin fixed($args) {
+  @include position(fixed, $args);
+}
+
+@mixin relative($args) {
+  @include position(relative, $args);
+}
+
+@mixin trbl ( $top: null, $right: null, $bottom: null, $left: null ) {
+  @if $top    { top: $top; }
+  @if $right  { right: $right; }
+  @if $bottom { bottom: $bottom; }
+  @if $left   { left: $left; }
+}
+
+///////////////////////
+// Mediaqueries
+@mixin mq($point, $minmax: min) {
+
+  @if $minmax == min {
+    @media screen and (min-width: $point) { @content; }
+  }
+  @else if $minmax == max {
+    @media screen and (max-width: $point) { @content; }
+  }
+}
+
+@mixin mq-range($min, $max){
+  @media screen and (min-width: $min) and (max-width: $max){
+    @content;
+  }
+}
+
+
+///////////////////////
+// Font setter through abstracted labels
+@mixin font($fontLabel, $weightLabel) {
+  $fonts: (body: (stack: 'Arial', weights:(normal: 400, bold: 600) )) !default;
+  $fontWeight: 400;
+  $fontStack: 'None';
+
+  // Match given type with fontstacks
+  @each $fontKey, $font in $fonts {
+    @if $fontLabel == $fontKey {
+      // get stack and weights
+      @each $elem, $value in $font {
+        @if $elem == 'stack' {
+          $fontStack: $value;
+        }
+
+        @if $elem == 'weights' {
+          @each $weightKey, $weight in $value {
+            @if $weightKey == $weightLabel {
+              $fontWeight: $weight;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // set CSS
+  font-family: $fontStack;
+  font-weight: $fontWeight;
+}
+
+
+///////////////////////
+// Self correcting grid ny @heydon
+// http://codepen.io/heydon/pen/bcdrl
+@mixin flexgrid ( $cols: 3  ) {
+  li {
+    /* set up the basic item widths */
+    width: 100% / $cols;
+  }
+
+  /* this for loop does everything else using nth-child,
+  nth-last-child and general siblings */
+
+  @for $i from 1 through $cols {
+    li:nth-child(#{$cols}n+1):nth-last-child(#{$i})  {
+        width: 100% / $i;
+        & ~ li {
+          width: 100% / $i;
+        }
+    }
+  }
+}
+
+
+///////////////////////
+// Prefixes for placeholder styling
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}
+}
+
+///////////////////////
+// Easy hover styles
+@mixin hoverer ( $prop, $normal, $hovered ) {
+  #{$prop}: $normal;
+
+  &:hover {
+    #{$prop}: $hovered;
+  }
+}
+
+
+///////////////////////
+// Easy responsive styles
+@mixin responsive ( $prop, $value, $breakpoint, $minmax: min ) {
+  @include mq($breakpoint, $minmax) {
+    #{$prop}: $value;
+  }
+}
+
+///////////////////////
+// Set size of element in one swoop
+@mixin size ( $s ) {
+  width: $s;
+  height: $s;
+}
+
+@mixin fontsize($target) {
+  font-size: emcalc($target);
+  font-size: remcalc($target);
+}
+
+@function createPalette($clr) {
+  @return (
+    x-dark: scale-color($clr, $saturation: -20%, $lightness: -60%),
+    dark: scale-color($clr, $saturation: -20%, $lightness: -40%),
+    mid-dark: scale-color($clr, $saturation: -10%, $lightness: -20%),
+    base: $clr,
+    mid-light: scale-color($clr, $saturation: -15%, $lightness: 40%),
+    light: scale-color($clr, $saturation: -20%, $lightness: 80%),
+    x-light: scale-color($clr, $saturation: -74%, $lightness: 86%)
+  );
+}
